@@ -1,191 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>n4nkh Terminal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #fdf6e3;
-            --text-color: #000000;
-            --border-color: #000000;
-            --button-hover-bg: #000000;
-            --button-hover-text: #fdf6e3;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'JetBrains Mono', monospace;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .terminal {
-            background-color: #ffffff;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 800px;
-            width: 100%;
-            height: auto;
-        }
-        .terminal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 15px;
-        }
-        .terminal-controls span {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-        .control-close { background-color: #ff5f56; }
-        .control-minimize { background-color: #ffbd2e; }
-        .control-maximize { background-color: #27c93f; }
-        .cmd-btn {
-            background: transparent;
-            border: 2px solid var(--border-color);
-            color: var(--text-color);
-            padding: 5px 10px;
-            margin: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'JetBrains Mono', monospace;
-            transition: 0.3s;
-        }
-        .cmd-btn:hover {
-            background-color: var(--button-hover-bg);
-            color: var(--button-hover-text);
-        }
-        #input-area {
-            display: flex;
-            align-items: center;
-            padding-top: 10px;
-        }
-        #prompt {
-            color: var(--text-color);
-            margin-right: 10px;
-            font-weight: bold;
-        }
-        .command-input {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            outline: none;
-            width: 100%;
-        }
-        .cursor {
-            width: 8px;
-            height: 16px;
-            background: var(--text-color);
-            animation: blink 1s step-start infinite;
-        }
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        .command-output {
-            margin-bottom: 10px;
-        }
-        .social-icon {
-            display: inline-flex;
-            align-items: center;
-            color: var(--text-color);
-            text-decoration: none;
-            margin-right: 10px;
-        }
-        .social-icon i {
-            margin-right: 8px;
-        }
-        .social-icon:hover {
-            text-shadow: 0 0 8px var(--border-color);
-        }
-    </style>
-</head>
-
-<body>
-<div class="terminal">
-    <div class="terminal-header">
-        <div class="terminal-controls">
-            <span class="control-close"></span>
-            <span class="control-minimize"></span>
-            <span class="control-maximize"></span>
-        </div>
-        <div><i class="fas fa-terminal"></i> n4nkh Terminal</div>
-    </div>
-    <div class="mb-2">
-        <button class="cmd-btn" data-command="whoami">whoami</button>
-        <button class="cmd-btn" data-command="contact">contact</button>
-        <button class="cmd-btn" data-command="clear">clear</button>
-    </div>
-    <div id="output-area"></div>
-    <div id="input-area">
-        <span id="prompt">n4nkh@terminal ~$</span>
-        <input type="text" class="command-input" readonly>
-        <span class="cursor"></span>
-    </div>
-</div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const outputArea = document.getElementById('output-area');
+  document.addEventListener('DOMContentLoaded', () => {
+    const outputArea = document.getElementById('output-area');
+    const input = document.getElementById('command-input');
+    const commandHistory = [];
+    let historyIndex = -1;
+    const commands = ['whoami', 'contact', 'help', 'projects', 'skills', 'clear'];
 
-        document.querySelectorAll('.cmd-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const command = button.getAttribute('data-command');
-                handleCommand(command);
-            });
-        });
-
-        function handleCommand(command) {
-            const outputDiv = document.createElement('div');
-            outputDiv.className = 'command-output';
-            outputDiv.innerHTML = `<span class="text-muted">n4nkh@terminal ~$</span> ${command}`;
-            let output = '';
-
-            switch (command.toLowerCase()) {
-                case 'whoami':
-                    output = `
-                    <div class="mt-2">
-                        <h5>Nguyễn An Khánh</h5>
-                        <p>Web Pentester & Red Teaming</p>
-                        <a href="https://n4nkh.id.vn" class="social-icon" target="_blank"><i class="fas fa-globe"></i> n4nkh.id.vn</a>
-                    </div>`;
-                    break;
-                case 'contact':
-                    output = `
-                    <div class="mt-2">
-                        <h5>📫 Contact</h5>
-                        <a href="mailto:ankhanh.v09@gmail.com" class="social-icon"><i class="fas fa-envelope"></i> ankhanh.v09@gmail.com</a><br>
-                        <a href="https://github.com/Saudadeeee" class="social-icon" target="_blank"><i class="fab fa-github"></i> Saudadeeee</a><br>
-                        <a href="https://x.com/Nankhanh_" class="social-icon" target="_blank"><i class="fab fa-twitter"></i> @Nankhanh_</a><br>
-                        <a href="https://www.linkedin.com/in/nguy%E1%BB%85n-kh%C3%A1nh-0ba5a215a/" class="social-icon" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                    </div>`;
-                    break;
-                case 'clear':
-                    outputArea.innerHTML = '';
-                    return;
-                default:
-                    output = `<div class="text-danger">bash: ${command}: command not found</div>`;
-            }
-
-            outputDiv.innerHTML += output;
-            outputArea.appendChild(outputDiv);
-            outputArea.scrollTop = outputArea.scrollHeight;
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        const command = input.value.trim();
+        if (command) {
+          commandHistory.push(command);
+          historyIndex = commandHistory.length;
+          handleCommand(command);
+          input.value = '';
         }
+      } else if (event.key === 'ArrowUp') {
+        if (historyIndex > 0) {
+          historyIndex--;
+          input.value = commandHistory[historyIndex];
+        }
+      } else if (event.key === 'ArrowDown') {
+        if (historyIndex < commandHistory.length - 1) {
+          historyIndex++;
+          input.value = commandHistory[historyIndex];
+        } else {
+          historyIndex = commandHistory.length;
+          input.value = '';
+        }
+      } else if (event.key === 'Tab') {
+        event.preventDefault();
+        const match = commands.find(cmd => cmd.startsWith(input.value));
+        if (match) input.value = match;
+      }
     });
+
+    function handleCommand(command) {
+      const timestamp = new Date().toLocaleTimeString();
+      const outputDiv = document.createElement('div');
+      outputDiv.className = 'command-output';
+      outputDiv.innerHTML = `<span class="text-muted">[${timestamp}] n4nkh@terminal ~$</span> ${command}`;
+      let output = '';
+
+      switch (command.toLowerCase()) {
+        case 'whoami':
+          output = `<div class="mt-2"><h5>Nguyễn An Khánh</h5><p>Web Pentester & Red Teaming</p><a href="https://n4nkh.id.vn" class="social-icon" target="_blank"><i class="fas fa-globe"></i> n4nkh.id.vn</a></div>`;
+          break;
+        case 'contact':
+          output = `<div class="mt-2"><h5>📫 Contact</h5><a href="mailto:ankhanh.v09@gmail.com" class="social-icon"><i class="fas fa-envelope"></i> ankhanh.v09@gmail.com</a><br><a href="https://github.com/Saudadeeee" class="social-icon" target="_blank"><i class="fab fa-github"></i> Saudadeeee</a><br><a href="https://x.com/Nankhanh_" class="social-icon" target="_blank"><i class="fab fa-twitter"></i> @Nankhanh_</a><br><a href="https://www.linkedin.com/in/nguy%E1%BB%85n-kh%C3%A1nh-0ba5a215a/" class="social-icon" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></div>`;
+          break;
+        case 'help':
+          output = `<div class="mt-2"><strong>Available commands:</strong><ul><li><code>whoami</code> - Info about me</li><li><code>contact</code> - How to reach me</li><li><code>projects</code> - List of personal projects</li><li><code>skills</code> - My skillset</li><li><code>clear</code> - Clear terminal</li></ul></div>`;
+          break;
+        case 'projects':
+          output = `<div class="mt-2"><h5>📁 Projects</h5><ul><li>Bug Bounty Automation Scripts</li><li>Custom Red Team Toolkits</li><li>Browser Exploitation Labs</li></ul></div>`;
+          break;
+        case 'skills':
+          output = `<div class="mt-2"><h5>🛠️ Skills</h5><ul><li>Web Pentesting (OWASP Top 10)</li><li>Red Teaming & Adversary Simulation</li><li>Python, Bash, JavaScript</li><li>CTF & Reverse Engineering</li></ul></div>`;
+          break;
+        case 'clear':
+          outputArea.innerHTML = '';
+          return;
+        default:
+          output = `<div class="text-danger">bash: ${command}: command not found</div>`;
+      }
+
+      outputDiv.innerHTML += output;
+      outputArea.appendChild(outputDiv);
+      outputArea.scrollTop = outputArea.scrollHeight;
+    }
+  });
 </script>
-</body>
-</html>

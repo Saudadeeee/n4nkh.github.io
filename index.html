@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>n4nkh Terminal</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>    :root {
       --bg-color: #fdf6e3;
@@ -19,25 +20,46 @@
     }
     [data-theme="dark"] .terminal {
       background-color: #161b22;
+      box-shadow: 4px 4px 0 var(--border-color);
     }
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 18px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
+      /* Tránh layout shift khi scroll */
+      overflow-x: hidden;
+      /* Tối ưu rendering cho độ nét */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }    .terminal {
       background-color: #ffffff;
-      border: 2px solid var(--border-color);
-      border-radius: 10px;
+      border: 3px solid var(--border-color);
+      border-radius: 15px;
+      box-shadow: 4px 4px 0 var(--border-color);
       padding: 20px;
       max-width: 800px;
       width: 100%;
       height: 90vh;
-      overflow-y: auto;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      position: relative;
+      /* Ẩn scrollbar nhưng vẫn giữ chức năng scroll */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+      /* Tối ưu rendering cho độ nét */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    .terminal::-webkit-scrollbar {
+      display: none; /* Chrome/Safari/Opera */
     }
     @media (max-width: 768px) {
       .terminal {
@@ -53,23 +75,37 @@
       justify-content: space-between;
       align-items: center;
       padding-bottom: 10px;
-      border-bottom: 2px solid var(--border-color);
+      border-bottom: 3px solid var(--border-color);
+      border-bottom-style: dashed;
       margin-bottom: 15px;
+      font-weight: 700;
     }
     .terminal-controls span {
       display: inline-block;
-      width: 12px;
-      height: 12px;
+      width: 15px;
+      height: 15px;
       border-radius: 50%;
-      margin-right: 6px;
+      margin-right: 8px;
+      border: 2px solid var(--border-color);
     }
-    .control-close { background-color: #ff5f56; }
-    .control-minimize { background-color: #ffbd2e; }
-    .control-maximize { background-color: #27c93f; }
+    .control-close { 
+      background-color: #ff5f56;
+      transform: rotate(1deg);
+    }
+    .control-minimize { 
+      background-color: #ffbd2e;
+      transform: rotate(-1deg);
+    }
+    .control-maximize { 
+      background-color: #27c93f;
+      transform: rotate(0.5deg);
+    }
     #input-area {
       display: flex;
       align-items: center;
       padding-top: 10px;
+      border-top: 2px dashed var(--border-color);
+      margin-top: 10px;
     }    #prompt {
       color: var(--text-color);
       margin-right: 5px;
@@ -80,11 +116,14 @@
       background: transparent;
       border: none;
       color: var(--text-color);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 18px;
       outline: none;
       flex: 1;
       min-width: 0;
+      /* Tối ưu rendering cho độ nét */
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
     .command-output {
       margin-bottom: 10px;
@@ -125,12 +164,15 @@
       white-space: pre;
       font-size: 11px;
       line-height: 1.2;
-      overflow-x: auto;
+      overflow-x: hidden;
+      overflow-y: hidden;
       background: transparent;
-      padding: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 5px;
+      padding: 15px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      border-style: solid;
       margin: 10px 0;
+      word-wrap: break-word;
     }
   </style>
 </head>

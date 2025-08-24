@@ -32,9 +32,7 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
-      /* Tránh layout shift khi scroll */
       overflow-x: hidden;
-      /* Tối ưu rendering cho độ nét */
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
@@ -50,16 +48,14 @@
       overflow-y: scroll;
       overflow-x: hidden;
       position: relative;
-      /* Ẩn scrollbar nhưng vẫn giữ chức năng scroll */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE/Edge */
-      /* Tối ưu rendering cho độ nét */
+      scrollbar-width: none; 
+      -ms-overflow-style: none; 
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
     }
     .terminal::-webkit-scrollbar {
-      display: none; /* Chrome/Safari/Opera */
+      display: none;
     }
     @media (max-width: 768px) {
       .terminal {
@@ -121,7 +117,7 @@
       outline: none;
       flex: 1;
       min-width: 0;
-      /* Tối ưu rendering cho độ nét */
+
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -211,7 +207,6 @@
   "Hacking is not a crime, it’s a skillset. What matters is how you use it. - Unknown"
 ];
 
-    // Display welcome message on startup
     const welcomeDiv = document.createElement('div');
     welcomeDiv.className = 'command-output';
     welcomeDiv.innerHTML = `
@@ -223,7 +218,6 @@
     `;
     outputArea.appendChild(welcomeDiv);
     
-    // Ensure initial scroll to bottom and focus
     setTimeout(() => {
       outputArea.scrollTop = outputArea.scrollHeight;
       input.focus();
@@ -301,7 +295,7 @@
           output = `<div class="mt-2">${new Date().toString()}</div>`;
           break;        case 'matrix':
           createMatrixEffect();
-          // Ensure scroll after matrix effect
+
           setTimeout(() => {
             outputArea.scrollTop = outputArea.scrollHeight;
             input.focus();
